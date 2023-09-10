@@ -1,4 +1,4 @@
-package mariadb_locks
+package mongodb_locks
 
 import (
 	"context"
