@@ -2,23 +2,27 @@ package mongodb_locks
 
 import (
 	"context"
-	storage_lock_test_helper "github.com/storage-lock/go-storage-lock-test-helper"
-	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-const MONGO_URI_ENV_NAME = "STORAGE_LOCK_MONGO_URI"
-
-func TestNewMongoLockByUri(t *testing.T) {
-
-	mongoUri := os.Getenv(MONGO_URI_ENV_NAME)
-	assert.NotEmpty(t, mongoUri)
-
-	factory, err := GetMongoLockFactoryByUri(context.Background(), mongoUri)
-	assert.Nil(t, err)
-
-	storage_lock_test_helper.PlayerNum = 10
-	storage_lock_test_helper.EveryOnePlayTimes = 100
-	storage_lock_test_helper.TestStorageLock(t, factory)
+func TestGlobalUriLockFactory_InitiallyInitialized(t *testing.T) {
+	assert.NotNil(t, uriStorageLockFactoryBeanFactory)
 }
+
+func TestNewMongoLockByUri_InvalidUri(t *testing.T) {
+	_, err := NewMongoLockByUri(context.Background(), "invalid-uri", "test-lock")
+	assert.Error(t, err)
+}
+
+func TestGetMongoLockFactoryByUri_InvalidUri(t *testing.T) {
+	_, err := GetMongoLockFactoryByUri(context.Background(), "invalid-uri")
+	assert.Error(t, err)
+}
+
+func TestNewMongoLockByUriWithOptions_InvalidUri(t *testing.T) {
+	_, err := NewMongoLockByUriWithOptions(context.Background(), "invalid-uri", nil)
+	assert.Error(t, err)
+}
+

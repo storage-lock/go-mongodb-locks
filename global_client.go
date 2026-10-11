@@ -10,6 +10,10 @@ import (
 
 var clientStorageLockFactoryBeanFactory *storage_lock_factory.StorageLockFactoryBeanFactory[*mongo.Client, *mongo.Client] = storage_lock_factory.NewStorageLockFactoryBeanFactory[*mongo.Client, *mongo.Client]()
 
+// newMongoStorageByClient 指向 mongodb_storage.NewMongoStorage，包级变量以便单测注入构造失败，
+// 覆盖 GetOrInit initFunc 的错误分支。
+var newMongoStorageByClient = mongodb_storage.NewMongoStorage
+
 func NewMongoLockByClient(ctx context.Context, client *mongo.Client, lockId string) (*storage_lock.StorageLock, error) {
 	factory, err := GetMongoLockFactoryByClient(ctx, client)
 	if err != nil {
@@ -30,7 +34,7 @@ func GetMongoLockFactoryByClient(ctx context.Context, client *mongo.Client) (*st
 	return clientStorageLockFactoryBeanFactory.GetOrInit(ctx, client, func(ctx context.Context) (*storage_lock_factory.StorageLockFactory[*mongo.Client], error) {
 		connectionManager := mongodb_storage.NewMongoConnectionManagerFromClient(client)
 		options := mongodb_storage.NewMongoStorageOptions().SetConnectionManager(connectionManager)
-		storage, err := mongodb_storage.NewMongoStorage(ctx, options)
+		storage, err := newMongoStorageByClient(ctx, options)
 		if err != nil {
 			return nil, err
 		}

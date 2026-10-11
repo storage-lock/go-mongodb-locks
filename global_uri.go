@@ -10,6 +10,10 @@ import (
 
 var uriStorageLockFactoryBeanFactory *storage_lock_factory.StorageLockFactoryBeanFactory[string, *mongo.Client] = storage_lock_factory.NewStorageLockFactoryBeanFactory[string, *mongo.Client]()
 
+// newMongoStorageByURI 指向 mongodb_storage.NewMongoStorage，包级变量以便单测注入构造失败，
+// 覆盖 GetOrInit initFunc 的错误分支。
+var newMongoStorageByURI = mongodb_storage.NewMongoStorage
+
 func NewMongoLockByUri(ctx context.Context, uri string, lockId string) (*storage_lock.StorageLock, error) {
 	factory, err := GetMongoLockFactoryByUri(ctx, uri)
 	if err != nil {
@@ -29,7 +33,7 @@ func NewMongoLockByUriWithOptions(ctx context.Context, uri string, options *stor
 func GetMongoLockFactoryByUri(ctx context.Context, uri string) (*storage_lock_factory.StorageLockFactory[*mongo.Client], error) {
 	return uriStorageLockFactoryBeanFactory.GetOrInit(ctx, uri, func(ctx context.Context) (*storage_lock_factory.StorageLockFactory[*mongo.Client], error) {
 		options := mongodb_storage.NewMongoStorageOptionsWithURI(uri)
-		storage, err := mongodb_storage.NewMongoStorage(ctx, options)
+		storage, err := newMongoStorageByURI(ctx, options)
 		if err != nil {
 			return nil, err
 		}
