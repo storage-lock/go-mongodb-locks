@@ -22,7 +22,7 @@ require (
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/montanaflynn/stats v0.7.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/storage-lock/go-events v0.0.4 // indirect
+	github.com/storage-lock/go-events v0.0.5 // indirect
 	github.com/storage-lock/go-ntp-time-provider v0.0.3 // indirect
 	github.com/storage-lock/go-storage v0.0.3 // indirect
 	github.com/storage-lock/go-storage-events v0.0.6 // indirect
