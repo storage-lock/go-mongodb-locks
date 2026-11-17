@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/storage-lock/go-mongodb-storage v0.0.1
-	github.com/storage-lock/go-storage-lock v0.0.6
+	github.com/storage-lock/go-storage-lock v0.1.0
 	github.com/storage-lock/go-storage-lock-factory v0.0.2
 	github.com/stretchr/testify v1.11.1
 	go.mongodb.org/mongo-driver v1.12.1
@@ -24,7 +24,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/storage-lock/go-events v0.0.5 // indirect
 	github.com/storage-lock/go-ntp-time-provider v0.0.3 // indirect
-	github.com/storage-lock/go-storage v0.0.3 // indirect
+	github.com/storage-lock/go-storage v0.1.0 // indirect
 	github.com/storage-lock/go-storage-events v0.0.6 // indirect
 	github.com/storage-lock/go-utils v0.0.2 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
